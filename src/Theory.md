@@ -20,6 +20,8 @@ availability (protection from DOS attacks).
 
 ``public interface Filter``
 
+
+
 A filter is an object that performs filtering tasks on either the request to a resource (a servlet or static content),
 or on the response from a resource, or both.
 

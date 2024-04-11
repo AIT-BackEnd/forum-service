@@ -9,21 +9,20 @@ import java.time.LocalDateTime;
 
 @Getter
 @EqualsAndHashCode(of = {"user", "dateCreated"})
-@NoArgsConstructor//дефолтный конструктор
+@NoArgsConstructor
 public class Comment {
     @Setter
-    private String user;
+    String user;
     @Setter
-    private String message;
-    private LocalDateTime dateCreated = LocalDateTime.now();
-    private int likes;
+    String message;
+    LocalDateTime dateCreated = LocalDateTime.now();
+    int likes;
 
     public Comment(String user, String message) {
         this.user = user;
         this.message = message;
     }
-
-    public void addLike() {
+    public void addLike(){
         likes++;
     }
 }

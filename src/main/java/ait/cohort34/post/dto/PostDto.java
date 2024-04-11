@@ -2,7 +2,6 @@ package ait.cohort34.post.dto;
 
 import lombok.*;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -10,16 +9,16 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder // для создания обьектов в Set и List
+@Builder
 public class PostDto {
-    private String id;
-    private String title;
-    private String content;
-    private String author;
-    private LocalDateTime dateCreated;
-    @Singular //создание обьекта по одному
-    private Set<String> tags;
-    private Integer likes;
+    String id;
+    String title;
+    String content;
+    String author;
+    LocalDateTime dateCreated;
     @Singular
-    private List<CommentDto> comments;
+    Set<String> tags;
+    Integer likes;
+    @Singular
+    List<CommentDto> comments;
 }

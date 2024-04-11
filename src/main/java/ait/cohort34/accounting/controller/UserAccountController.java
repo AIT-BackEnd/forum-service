@@ -1,11 +1,10 @@
-package ait.cohort34.accouting.controller;
+package ait.cohort34.accounting.controller;
 
-
-import ait.cohort34.accouting.dto.RolesDto;
-import ait.cohort34.accouting.dto.UserDto;
-import ait.cohort34.accouting.dto.UserEditDto;
-import ait.cohort34.accouting.dto.UserRegisterDto;
-import ait.cohort34.accouting.service.UserAccountService;
+import ait.cohort34.accounting.dto.RolesDto;
+import ait.cohort34.accounting.dto.UserDto;
+import ait.cohort34.accounting.dto.UserEditDto;
+import ait.cohort34.accounting.dto.UserRegisterDto;
+import ait.cohort34.accounting.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account")
 @RequiredArgsConstructor
 public class UserAccountController {
-
     final UserAccountService userAccountService;
-
 
     @PostMapping("/register")
     public UserDto register(@RequestBody UserRegisterDto userRegisterDto) {
@@ -25,7 +22,7 @@ public class UserAccountController {
 
     @PostMapping("/login")
     public UserDto login() {
-        //FIXME method login in UserAccountController
+        // TODO method login in UserAccountController
         return null;
     }
 
@@ -45,20 +42,18 @@ public class UserAccountController {
     }
 
     @PutMapping("/user/{login}/role/{role}")
-    public RolesDto addRolesList(@PathVariable String login, @PathVariable String role) {
+    public RolesDto addRole(@PathVariable String login, @PathVariable String role) {
         return userAccountService.changeRolesList(login, role, true);
     }
 
     @DeleteMapping("/user/{login}/role/{role}")
-    public RolesDto changeRolesList(@PathVariable String login, @PathVariable String role) {
+    public RolesDto deleteRole(@PathVariable String login, @PathVariable String role) {
         return userAccountService.changeRolesList(login, role, false);
     }
 
     @PutMapping("/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword() {
-        //TODO method changePassword in UserAccountController
+        // TODO method changePassword in UserAccountController
     }
-
-
 }

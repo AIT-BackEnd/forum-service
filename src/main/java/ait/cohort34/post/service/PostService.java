@@ -7,7 +7,7 @@ import ait.cohort34.post.dto.PostDto;
 
 import java.util.Set;
 
-public interface PostService { //в интерфейсе сервиса прописываем методы согластно API
+public interface PostService {
     PostDto addNewPost(String author, NewPostDto newPostDto);
 
     PostDto findPostById(String id);
@@ -22,7 +22,7 @@ public interface PostService { //в интерфейсе сервиса проп
 
     Iterable<PostDto> findPostsByAuthor(String author);
 
-    Iterable<PostDto> findPostByTags(Set<String> tags);
+    Iterable<PostDto> findPostsByTags(Set<String> tags);
 
     Iterable<PostDto> findPostsByPeriod(DatePeriodDto datePeriodDto);
 }

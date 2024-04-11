@@ -1,6 +1,5 @@
 package ait.cohort34.post.model;
 
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,23 +12,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 @Getter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @Document(collection = "posts")
 public class Post {
-    private String id;
+    String id;
     @Setter
-    private String title;
+    String title;
     @Setter
-    private String content;
+    String content;
     @Setter
-    private String author;
-    private LocalDateTime dateCreated = LocalDateTime.now();
-    private Set<String> tags = new HashSet<>();
-    private int likes;
-    private List<Comment> comments = new ArrayList<>();
+    String author;
+    LocalDateTime dateCreated = LocalDateTime.now();
+    Set<String> tags = new HashSet<>();
+    int likes;
+    List<Comment> comments = new ArrayList<>();
 
     public Post(String title, String content, Set<String> tags, String author) {
         this.title = title;
@@ -38,23 +36,23 @@ public class Post {
         this.author = author;
     }
 
-    public void addLike() {
+    public void addLike(){
         likes++;
     }
 
-    public boolean addTag(String tag) {
+    public boolean addTag(String tag){
         return tags.add(tag);
     }
 
-    public boolean removeTag(String tag) {
+    public boolean removeTag(String tag){
         return tags.remove(tag);
     }
 
-    public boolean addComment(Comment comment) {
+    public boolean addComment(Comment comment){
         return comments.add(comment);
     }
 
-    public boolean removeComment(Comment comment) {
+    public boolean removeComment(Comment comment){
         return comments.remove(comment);
     }
 }

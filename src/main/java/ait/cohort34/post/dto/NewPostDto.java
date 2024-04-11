@@ -1,18 +1,12 @@
 package ait.cohort34.post.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class NewPostDto {
-    private String title;
-    private String content;
-    private Set<String> tags;
-
+    String title;
+    String content;
+    Set<String> tags;
 }

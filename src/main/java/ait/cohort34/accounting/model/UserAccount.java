@@ -1,4 +1,4 @@
-package ait.cohort34.accouting.model;
+package ait.cohort34.accounting.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,17 +27,18 @@ public class UserAccount {
     }
 
     public UserAccount(String login, String password, String firstName, String lastName) {
-        this(); //вызывает предыдущий конструктор
+        this();
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public boolean adRole(String role){
+    public boolean addRole(String role) {
         return roles.add(Role.valueOf(role));
     }
-    public boolean removeRole(String role){
+
+    public boolean removeRole(String role) {
         return roles.remove(Role.valueOf(role));
     }
 }

@@ -1,4 +1,4 @@
-package ait.cohort34.accouting.dto;
+package ait.cohort34.accounting.dto;
 
 import lombok.Getter;
 

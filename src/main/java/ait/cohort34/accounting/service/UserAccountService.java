@@ -1,16 +1,14 @@
-package ait.cohort34.accouting.service;
+package ait.cohort34.accounting.service;
 
-import ait.cohort34.accouting.dto.RolesDto;
-import ait.cohort34.accouting.dto.UserDto;
-import ait.cohort34.accouting.dto.UserEditDto;
-import ait.cohort34.accouting.dto.UserRegisterDto;
-
+import ait.cohort34.accounting.dto.RolesDto;
+import ait.cohort34.accounting.dto.UserDto;
+import ait.cohort34.accounting.dto.UserEditDto;
+import ait.cohort34.accounting.dto.UserRegisterDto;
 
 public interface UserAccountService {
-
     UserDto register(UserRegisterDto userRegisterDto);
 
-    UserDto getUser(String login);//login и get user согластно Postman
+    UserDto getUser(String login);
 
     UserDto removeUser(String login);
 

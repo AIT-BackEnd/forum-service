@@ -1,6 +1,5 @@
 package ait.cohort34.post.controller;
 
-
 import ait.cohort34.post.dto.DatePeriodDto;
 import ait.cohort34.post.dto.NewCommentDto;
 import ait.cohort34.post.dto.NewPostDto;
@@ -12,13 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-
-@RestController //в Spring Framework используется для обозначения класса,
-// который обрабатывает HTTP-запросы и возвращает ответы. Как правило, этот класс служит контроллером в архитектуре MVC (Model-View-Controller)
-// и используется для создания веб-сервисов RESTful.
-@RequiredArgsConstructor //является частью проекта Lombok и используется для создания конструктора,
-// принимающего все обязательные аргументы полей класса, помеченных аннотацией @NonNull или финальных полей.
-// Она генерирует конструктор, принимающий только эти обязательные аргументы.
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/forum")
 public class PostController {
 
@@ -62,7 +56,7 @@ public class PostController {
 
     @PostMapping("/posts/tags")
     public Iterable<PostDto> findPostsByTags(@RequestBody Set<String> tags) {
-        return postService.findPostByTags(tags);
+        return postService.findPostsByTags(tags);
     }
 
     @PostMapping("/posts/period")

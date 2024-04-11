@@ -5,24 +5,21 @@ import ait.cohort34.post.dto.DatePeriodDto;
 import ait.cohort34.post.dto.NewCommentDto;
 import ait.cohort34.post.dto.NewPostDto;
 import ait.cohort34.post.dto.PostDto;
-import ait.cohort34.post.dto.exeptions.PostNotFoundException;
+import ait.cohort34.post.dto.exceptions.PostNotFoundException;
 import ait.cohort34.post.model.Comment;
 import ait.cohort34.post.model.Post;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
+    final PostRepository postRepository;
+    final ModelMapper modelMapper;
 
     @Override
     public PostDto addNewPost(String author, NewPostDto newPostDto) {
@@ -77,27 +74,27 @@ public class PostServiceImpl implements PostService {
     public void addLike(String id) {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         post.addLike();
-        post = postRepository.save(post);
+        postRepository.save(post);
     }
 
     @Override
     public Iterable<PostDto> findPostsByAuthor(String author) {
         return postRepository.findByAuthorIgnoreCase(author)
-                .map(p->modelMapper.map(p,PostDto.class))
+                .map(p -> modelMapper.map(p, PostDto.class))
                 .toList();
     }
 
     @Override
-    public Iterable<PostDto> findPostByTags(Set<String> tags) {
-        return postRepository.findByTagsIgnoreCase(tags)
+    public Iterable<PostDto> findPostsByTags(Set<String> tags) {
+        return postRepository.findByTagsInIgnoreCase(tags)
                 .map(p -> modelMapper.map(p, PostDto.class))
                 .toList();
     }
 
     @Override
     public Iterable<PostDto> findPostsByPeriod(DatePeriodDto datePeriodDto) {
-        return postRepository.findByDateCreatedBetween(datePeriodDto.getDateFrom(),datePeriodDto.getDateTo())
-                .map(p->modelMapper.map(p,PostDto.class))
+        return postRepository.findByDateCreatedBetween(datePeriodDto.getDateFrom(), datePeriodDto.getDateTo())
+                .map(p -> modelMapper.map(p, PostDto.class))
                 .toList();
     }
 }

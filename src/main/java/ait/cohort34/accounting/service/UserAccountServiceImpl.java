@@ -10,6 +10,7 @@ import ait.cohort34.accounting.dto.exceptions.UserExistsException;
 import ait.cohort34.accounting.dto.exceptions.UserNotFoundException;
 import ait.cohort34.accounting.model.UserAccount;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new UserExistsException();
         }
         UserAccount userAccount = modelMapper.map(userRegisterDto, UserAccount.class);
+        String password = BCrypt.hashpw(userRegisterDto.getPassword(), BCrypt.gensalt()); //шифрование передаваемого пароля
+        userAccount.setPassword(password);
         userAccountRepository.save(userAccount);
         return modelMapper.map(userAccount, UserDto.class);
     }
@@ -78,7 +81,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public void changePassword(String login, String newPassword) {
         UserAccount userAccount = userAccountRepository.findById(login).orElseThrow(UserNotFoundException::new);
-        userAccount.setPassword(newPassword);
+        String password = BCrypt.hashpw(newPassword, BCrypt.gensalt()); //шифрование передаваемого пароля
+        userAccount.setPassword(password);
         userAccountRepository.save(userAccount);
     }
 }

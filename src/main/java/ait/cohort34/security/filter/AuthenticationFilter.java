@@ -1,7 +1,9 @@
 package ait.cohort34.security.filter;
 
 import ait.cohort34.accounting.dao.UserAccountRepository;
+import ait.cohort34.accounting.model.Role;
 import ait.cohort34.accounting.model.UserAccount;
+import ait.cohort34.security.model.User;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
@@ -9,12 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Base64;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -26,9 +31,6 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-//        System.out.println(request.getMethod());
-//        System.out.println(request.getServletPath());
-//        System.out.println(request.getHeader("Authorization"));
         if (checkEndPoint(request.getMethod(), request.getServletPath())) {
             try {
                 String[] credentials = getCredential(request.getHeader("Authorization"));
@@ -36,9 +38,12 @@ public class AuthenticationFilter implements Filter {
                 if (!BCrypt.checkpw(credentials[1], userAccount.getPassword())) {
                     throw new RuntimeException();
                 }
-                request= new WrappedRequest(request,userAccount.getLogin());
+                Set<String> roles = userAccount.getRoles().stream()
+                        .map(Role::name)
+                        .collect(Collectors.toSet());
+                request = new WrappedRequest(request, userAccount.getLogin(), roles);
             } catch (Exception e) {
-                response.setStatus(401);
+                response.sendError(401);
                 return;
             }
 
@@ -47,14 +52,19 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean checkEndPoint(String method, String path) {
-        // Проверяем путь запроса
-        if (path.equals("/register") || path.equals("/posts")) {
-            // Для этих эндпоинтов не требуется аутентификации
-            return false;
-        }
-        // Для всех остальных эндпоинтов требуется аутентификация
-        return true;
+//      if("/account/register".equalsIgnoreCase(path)) {
+//          return false;
+//      }
+//      if(path.startsWith("/forum/posts")) {
+//          return false;
+//      }
+//      return true;
+
+//        return !("/account/register".equalsIgnoreCase(path) || path.startsWith("/forum/posts"));
+        return !((HttpMethod.POST.matches(method) && path.matches("/account/register")) || path.matches("/forum/posts/\\w+(/\\w+)?")
+        );
     }
+
 
     private String[] getCredential(String authorization) {
         String token = authorization.split(" ")[1];
@@ -64,14 +74,17 @@ public class AuthenticationFilter implements Filter {
 
     private class WrappedRequest extends HttpServletRequestWrapper {
         private String login;
+        private Set<String> roles;
 
-        public WrappedRequest(HttpServletRequest request, String login) {
+        public WrappedRequest(HttpServletRequest request, String login, Set<String> roles) {
             super(request);
             this.login = login;
+            this.roles = roles;
         }
+
         @Override
         public Principal getUserPrincipal() {
-            return () -> login;
+            return new User(login, roles);
         }
     }
 }

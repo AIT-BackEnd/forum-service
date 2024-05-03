@@ -12,6 +12,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class AuthorizationConfiguration {
         http.csrf(csrf -> csrf.disable());
         //управление сессиями
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+        http.cors(request -> getCorsConfiguration());
         // Настройка прав доступа для различных URL-адресов и методов HTTP
         http.authorizeHttpRequests(authorize -> authorize
                 // Открытый доступ
@@ -51,5 +56,18 @@ public class AuthorizationConfiguration {
                 .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
         );
         return http.build(); // Возврат созданной конфигурации
+    }
+
+    //https://learn.javascript.ru/fetch-crossorigin
+    private CorsConfiguration getCorsConfiguration() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(List.of("*"));
+        return corsConfiguration;
+
+        //место * нужно настраивать
     }
 }

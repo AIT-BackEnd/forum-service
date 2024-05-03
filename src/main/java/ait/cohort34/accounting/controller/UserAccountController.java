@@ -15,6 +15,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/account")
 @RequiredArgsConstructor
+//@CrossOrigin()
 public class UserAccountController {
 
     final UserAccountService userAccountService;
